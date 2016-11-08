@@ -5,13 +5,11 @@
  */
 package vista;
 
-
 import Controlador.CtlProducto;
 import Modelo.FiltrarLista;
 import Modelo.Productos;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -27,7 +25,7 @@ public class Filtro extends javax.swing.JPanel {
      */
     private CtlProducto gestionProducto;
     private FiltrarLista list;
-   
+
     public Filtro() {
         initComponents();
         gestionProducto = new CtlProducto();
@@ -35,32 +33,38 @@ public class Filtro extends javax.swing.JPanel {
         setBackground(Color.WHITE);
         list = new FiltrarLista();
         JScrollPane pane = new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        list.getCampoFiltro().setBounds(0, 0, 100, 40);
+        list.getCampoFiltro().setBounds(100, 0, 200, 160);
         list.getCampoFiltro().setVisible(true);
-        pane.setBounds(0, 0, 200, 140);
+        pane.setBounds(100, 0, 400, 200);
         pane.setVisible(true);
-        List<Productos> partes = gestionProducto.listCategoria();
-        String[] datos = new String[partes.size()];
-        for (int i = 0; i < partes.size(); i++) {
-            datos[i] = partes.get(i).getNombreproducto();
-            list.agregarItem(datos[i]);
-//        
-        }
         add(pane, BorderLayout.CENTER);
         add(list.getCampoFiltro(), BorderLayout.NORTH);
-       
-
     }
 
+    public void actualizar(List<Productos> productos) {
+        list.borrarItem();
+        String[] datos = new String[productos.size()];
+        for (int i = 0; i < productos.size(); i++) {
+            datos[i] = productos.get(i).getNombreproducto();
+            list.agregarItem(datos[i]);
+        }
+        add(list.getCampoFiltro(), BorderLayout.NORTH);
+    }
+    
+    public void vacio(){
+        list.borrarItem();
+        add(list.getCampoFiltro(), BorderLayout.NORTH);
+    }
+
+   
     public FiltrarLista getList() {
         return list;
     }
 
     public void setList(FiltrarLista list) {
         this.list = list;
+
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,15 +78,14 @@ public class Filtro extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

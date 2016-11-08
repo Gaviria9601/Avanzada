@@ -5,14 +5,21 @@
  */
 package Controlador;
 
-
 import Modelo.Categorias;
 import Modelo.Departamentos;
 import Modelo.Municipios;
+import Modelo.Ofertas;
 import Modelo.Productos;
+import Modelo.Subastas;
+import com.toedter.calendar.JDateChooser;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JPasswordField;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -27,12 +34,14 @@ public class CtlVentana {
     CtlProducto gestionProducto;
     CtlDepartamento gestiondepto;
     CtlMunicipio gestionmun;
+    CtlSubasta gestionSubasta;
 
     public CtlVentana() {
         gestionCategoria = new CtlCategoria();
         gestiondepto = new CtlDepartamento();
         gestionmun = new CtlMunicipio();
         gestionProducto = new CtlProducto();
+        gestionSubasta = new CtlSubasta();
     }
 
     /**
@@ -58,6 +67,11 @@ public class CtlVentana {
                 || nomEntidad.getText().isEmpty()
                 || nick.getText().isEmpty()
                 || pass.getText().isEmpty();
+    }
+
+    public boolean verificarDatosEnvioSolicitd(JList nombre, JDateChooser fechaE, JDateChooser fechaF, JSpinner cant, JTextArea des) {
+        return nombre.getSelectedIndex() == -1 || fechaE.getDate() == null || fechaF.getDate() == null || Integer.parseInt(cant.getValue() + "") == 0
+                || des.getText().isEmpty();
     }
 
     public boolean verificarDatosIngreso(JTextField usuario, JPasswordField password) {
@@ -101,6 +115,7 @@ public class CtlVentana {
 
     /**
      * lista las categorias
+     *
      * @return un modelo de informacion
      */
     public DefaultTableModel listarCategorias() {
@@ -123,16 +138,16 @@ public class CtlVentana {
         return temporal;
 
     }
-    
-    
+
     /**
      * lista los Productos
+     *
      * @return un modelo de informacion
      */
     public DefaultTableModel listarProductos() {
         List<Productos> producto = gestionProducto.list();
         DefaultTableModel temporal;
-        String nombreColumnas[] = {"Codigo", "Nombre", "Descripción","Categoria"};
+        String nombreColumnas[] = {"Codigo", "Nombre", "Descripción", "Categoria"};
         temporal = new DefaultTableModel(new Object[][]{}, nombreColumnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -151,6 +166,19 @@ public class CtlVentana {
 
     }
 
+    public void cambiarEstadoSubastas(List<Subastas> sub) {
+        for (int i = 0; i < sub.size(); i++) {
+            gestionSubasta.update(sub.get(i).getCodigosubasta(),
+                    sub.get(i).getCantidadproductos(), false,
+                    sub.get(i).getFechainicio(),
+                    sub.get(i).getFechafinal(),
+                    sub.get(i).getFechaentrega(),
+                    sub.get(i).getDescripcion(),
+                    sub.get(i).getEmpresariosCedula().getCedula(),
+                    sub.get(i).getProductosCodigo().getCodigo());
+        }
+    }
+
     public CtlMunicipio getGestionmun() {
         return gestionmun;
     }
@@ -158,7 +186,171 @@ public class CtlVentana {
     public void setGestionmun(CtlMunicipio gestionmun) {
         this.gestionmun = gestionmun;
     }
-    
-    
+
+    /**
+     * genera la fecha actual del sistema
+     *
+     * @return la fecha
+     */
+    public Date generarFechaActual() {
+        Calendar fechaHora = Calendar.getInstance();
+        Date fecha = fechaHora.getTime();
+        return fecha;
+    }
+
+    /**
+     * Validar la seleccion de una solicitd en la tabla
+     *
+     * @param jTSubastas, tabla de la cual se selecciona
+     * @return
+     */
+    public boolean validarSeleccionSolicitud(JTable jTSubastas) {
+        for (int i = 0; i < jTSubastas.getRowCount(); i++) {
+            if (jTSubastas.isRowSelected(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Validar la seleccion de una solicitd en la tabla
+     *
+     * @param jTOfertas, tabla de la cual se selecciona
+     * @return
+     */
+    public boolean validarSeleccionOferta(JTable jTOfertas) {
+        for (int i = 0; i < jTOfertas.getRowCount(); i++) {
+            if (jTOfertas.isRowSelected(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * lista las ofertas
+     *
+     * @param oferta
+     * @return un modelo de informacion
+     */
+    public DefaultTableModel listarOfertasSubasta(List<Ofertas> oferta) {
+        DefaultTableModel temporal;
+        String nombreColumnas[] = {"Codigo", "Valor", "Fecha Oferta", "Proveedor", "Codigo Subasta"};
+        temporal = new DefaultTableModel(new Object[][]{}, nombreColumnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (int i = 0; i < oferta.size(); i++) {
+            temporal.addRow(new Object[]{
+                oferta.get(i).getCodigooferta(),
+                oferta.get(i).getValor(),
+                oferta.get(i).getFechaoferta(),
+                oferta.get(i).getProveedoresCedula().getNombrecompleto(),
+                oferta.get(i).getSubastasCodigosubasta().getCodigosubasta(),});
+        }
+        return temporal;
+    }
+
+    /**
+     * lista las subastas
+     *
+     * @return un modelo de informacion
+     */
+    public DefaultTableModel listarSubastas(String cedula) {
+        List<Subastas> subasta = gestionSubasta.list(cedula);
+        DefaultTableModel temporal;
+        String nombreColumnas[] = {"Codigo Subasta", "Cantidad", "Estado",
+            "Fecha Inicio", "Fecha Final", "Fecha Entrega", "Producto"};
+        temporal = new DefaultTableModel(new Object[][]{}, nombreColumnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        for (int i = 0; i < subasta.size(); i++) {
+            temporal.addRow(new Object[]{
+                subasta.get(i).getCodigosubasta(),
+                subasta.get(i).getCantidadproductos(),
+                estado(subasta.get(i).getEstado()),
+                subasta.get(i).getFechainicio(),
+                subasta.get(i).getFechafinal(),
+                subasta.get(i).getFechaentrega(),
+                subasta.get(i).getProductosCodigo().getNombreproducto(),});
+        }
+        return temporal;
+
+    }
+
+    public String estado(boolean estado) {
+        if (estado) {
+            return "Activo";
+        } else {
+            return "Desactivo";
+        }
+    }
+
+    public String generarFechaActualCadena() {
+        Calendar fechaHora = Calendar.getInstance();
+        Date fecha = fechaHora.getTime();
+        String[] datos = fecha.toString().split(" ");
+        String mes = toStringMes(datos[1]);
+        String dia = datos[2];
+        String año = datos[5];
+        String fe = dia + "/" + mes + "/" + año;
+        return fe;
+    }
+
+    /**
+     * configura el mes en letras a numeros
+     *
+     * @param mes, mes en letras
+     * @return el mes en numeros
+     */
+    public String toStringMes(String mes) {
+        String mesNum = mes;
+        switch (mes) {
+            case "Ene":
+                mesNum = "01";
+                break;
+            case "Feb":
+                mesNum = "02";
+                break;
+            case "Mar":
+                mesNum = "03";
+                break;
+            case "Abr":
+                mesNum = "04";
+                break;
+            case "May":
+                mesNum = "05";
+                break;
+            case "Jun":
+                mesNum = "06";
+                break;
+            case "Jul":
+                mesNum = "07";
+                break;
+            case "Ago":
+                mesNum = "08";
+                break;
+            case "Sep":
+                mesNum = "9";
+                break;
+            case "Oct":
+                mesNum = "10";
+                break;
+            case "Nov":
+                mesNum = "11";
+                break;
+            case "Dic":
+                mesNum = "12";
+                break;
+        }
+        return mesNum;
+    }
 
 }

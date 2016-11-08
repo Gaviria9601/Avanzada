@@ -259,7 +259,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
         jLabel4.setText("Nombre Producto:");
 
-        jTFNombreProducto.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
+        jTFNombreProducto.setFont(new java.awt.Font("Maiandra GD", 0, 12)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
         jLabel6.setText("Seleccione la Categoria:");
@@ -275,12 +275,12 @@ public class VentanaAdministrador extends javax.swing.JFrame {
         jLabel5.setText("Descripción:");
 
         jTADescripcionProducto.setColumns(20);
-        jTADescripcionProducto.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
+        jTADescripcionProducto.setFont(new java.awt.Font("Maiandra GD", 0, 12)); // NOI18N
         jTADescripcionProducto.setRows(5);
         jScrollPane3.setViewportView(jTADescripcionProducto);
 
         jTFDescripcionCate.setColumns(20);
-        jTFDescripcionCate.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
+        jTFDescripcionCate.setFont(new java.awt.Font("Maiandra GD", 0, 12)); // NOI18N
         jTFDescripcionCate.setRows(5);
         jTFDescripcionCate.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTFDescripcionCate.setEnabled(false);
@@ -484,7 +484,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
         if (gestionVentana.verificarDatosRegistroProducto(jTFNombreProducto, jCBCategorias, jTADescripcionProducto)) {
             JOptionPane.showMessageDialog(null, "Digite todo los campos para el registro");
         } else {
-            String nombreProducto = jTFNombreProducto.getText();
+            String nombreProducto = jTFNombreProducto.getText().toUpperCase();
             String descripcionProducto = jTADescripcionProducto.getText();
             String cate = (String) jCBCategorias.getSelectedItem();
             Categorias categoria = gestionCategoria.searchNombre(cate);

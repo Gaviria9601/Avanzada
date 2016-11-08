@@ -42,6 +42,18 @@ public class ProductoDAO extends Conexion {
             return null;
         }
     }
+    
+    public Productos searchNombre(String nombre) {
+        try {
+            conectar();
+            Productos producto = entity.createNamedQuery("Productos.findByNombreproducto", Productos.class)
+                    .setParameter("nombreproducto", nombre).getSingleResult();
+            desconectar();
+            return producto;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public Productos searchCate(int codigo) {
         try {
@@ -95,11 +107,11 @@ public class ProductoDAO extends Conexion {
         }
     }
 
-    public List<Productos> listCategoria(int codigo) {
+    public List<Productos> listCategoria(String nombre) {
         try {
             conectar();
-            List<Productos> list = entity.createNamedQuery("Productos.findByCodCate", Productos.class)
-                    .setParameter("codCate", codigo).getResultList();
+            List<Productos> list = entity.createNamedQuery("Productos.findByNomCate", Productos.class)
+                    .setParameter("nombre", nombre).getResultList();
             desconectar();
             return list;
         } catch (Exception e) {

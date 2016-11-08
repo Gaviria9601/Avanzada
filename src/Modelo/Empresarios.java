@@ -33,9 +33,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresarios.findByCedula", query = "SELECT e FROM Empresarios e WHERE e.cedula = :cedula"),
     @NamedQuery(name = "Empresarios.findByNombrecompleto", query = "SELECT e FROM Empresarios e WHERE e.nombrecompleto = :nombrecompleto"),
     @NamedQuery(name = "Empresarios.findByNicknameyContrasenia", query = "SELECT e FROM Empresarios e WHERE e.nickname = :nickname AND e.contrasenia = :contrasenia"),
+    @NamedQuery(name = "Empresarios.findByNickname", query = "SELECT e FROM Empresarios e WHERE e.nickname = :nickname"),
     @NamedQuery(name = "Empresarios.findByDireccion", query = "SELECT e FROM Empresarios e WHERE e.direccion = :direccion"),
     @NamedQuery(name = "Empresarios.findByNombreentidad", query = "SELECT e FROM Empresarios e WHERE e.nombreentidad = :nombreentidad")})
 public class Empresarios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -68,7 +70,7 @@ public class Empresarios implements Serializable {
         this.cedula = cedula;
     }
 
-    public Empresarios(String cedula, String nombrecompleto, String nickname, String contrasenia,String direccion, String nombreentidad,Municipios idmunicpio) {
+    public Empresarios(String cedula, String nombrecompleto, String nickname, String contrasenia, String direccion, String nombreentidad, Municipios idmunicpio) {
         this.cedula = cedula;
         this.nombrecompleto = nombrecompleto;
         this.nickname = nickname;
@@ -167,5 +169,5 @@ public class Empresarios implements Serializable {
     public String toString() {
         return "Modelo.Empresarios[ cedula=" + cedula + " ]";
     }
-    
+
 }

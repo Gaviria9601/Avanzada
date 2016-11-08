@@ -44,8 +44,23 @@ public class EmpresarioDAO extends Conexion {
         }
     }
     
+    
+    public Empresarios searchNombre(String nombre) {
+        try {
+            conectar();
+            Empresarios emp = entity.createNamedQuery("Empresarios.findByNickname", Empresarios.class)
+                    .setParameter("nickname", nombre).getSingleResult();
+            desconectar();
+            return emp;
+        } catch (Exception e) {
+            desconectar();
+            return null;
+        }
+    }
+    
     public Empresarios searchLogin(String nickname, String contrasenia ){
         try{
+            conectar();
             Empresarios emp = entity.createNamedQuery("Empresarios.findByNicknameyContrasenia", Empresarios.class)
                     .setParameter("nickname", nickname)
                     .setParameter("contrasenia", contrasenia).getSingleResult();

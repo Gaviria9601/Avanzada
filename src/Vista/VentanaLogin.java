@@ -6,8 +6,12 @@
 package Vista;
 
 import Controlador.CtlLogin;
+import Controlador.CtlSubasta;
 import Controlador.CtlVentana;
+import Modelo.Subastas;
 import java.awt.Color;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +25,7 @@ public class VentanaLogin extends javax.swing.JFrame {
      */
     CtlVentana gestionVentana;
     CtlLogin gestionLogin;
+    CtlSubasta gestionSubasta;
 
     public VentanaLogin() {
         initComponents();
@@ -28,6 +33,10 @@ public class VentanaLogin extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.WHITE);// Color de fondo de la ventana
         gestionVentana = new CtlVentana();
         gestionLogin = new CtlLogin();
+        gestionSubasta = new CtlSubasta();
+        Date fechaActual = gestionVentana.generarFechaActual();
+        List<Subastas> subastas = gestionSubasta.searchEnd(fechaActual);
+        gestionVentana.cambiarEstadoSubastas(subastas);
     }
 
     /**
@@ -144,7 +153,7 @@ public class VentanaLogin extends javax.swing.JFrame {
                     break;
                 case "Empresario":
                     JOptionPane.showMessageDialog(null, "Bienvenido Empresario " + nickname);
-                    new VentanaEmpresario().setVisible(true);
+                    new VentanaEmpresario(nickname).setVisible(true);
                     limpiarCamposLogin();
                     break;
 
@@ -167,11 +176,11 @@ public class VentanaLogin extends javax.swing.JFrame {
         new VentanaRegistro().setVisible(true);
     }//GEN-LAST:event_jBRegistrarActionPerformed
 
-    public void limpiarCamposLogin(){
+    public void limpiarCamposLogin() {
         jTFNickname.setText(null);
         jPFContrasenia.setText(null);
     }
-    
+
     /**
      * @param args the command line arguments
      */

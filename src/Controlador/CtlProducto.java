@@ -32,6 +32,10 @@ public class CtlProducto {
         return dao.search(codigo);
     }
 
+    public Productos searchNombre(String nombre) {
+        return dao.searchNombre(nombre);
+    }
+
     public Productos searchCate(int codigo) {
         return dao.searchCate(codigo);
     }
@@ -49,8 +53,8 @@ public class CtlProducto {
         return dao.list();
     }
 
-    public List<Productos> listCategoria(int codigo) {
-        return dao.listCategoria(codigo);
+    public List<Productos> listProductosCate(String nombre) {
+        return dao.listCategoria(nombre);
     }
 
 }

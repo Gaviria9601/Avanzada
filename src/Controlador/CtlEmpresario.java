@@ -30,6 +30,10 @@ public class CtlEmpresario {
         return dao.search(cedula);
     }
     
+    public Empresarios searchNombre(String nombre) {
+        return dao.searchNombre(nombre);
+    }
+    
     public Empresarios searchLogin(String nickname,String contrasenia) {
         return dao.searchLogin(nickname, contrasenia);
     }

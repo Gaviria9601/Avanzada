@@ -32,10 +32,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Ofertas.findAll", query = "SELECT o FROM Ofertas o"),
     @NamedQuery(name = "Ofertas.findByCodigooferta", query = "SELECT o FROM Ofertas o WHERE o.codigooferta = :codigooferta"),
+    @NamedQuery(name = "Ofertas.findByOfertaSubasta", query = "SELECT o FROM Ofertas o WHERE o.subastas_codigosubasta.codigosubasta = :codSubasta"),
     @NamedQuery(name = "Ofertas.findByValor", query = "SELECT o FROM Ofertas o WHERE o.valor = :valor"),
     @NamedQuery(name = "Ofertas.findByFechaoferta", query = "SELECT o FROM Ofertas o WHERE o.fechaoferta = :fechaoferta"),
     @NamedQuery(name = "Ofertas.findByDetallesoferta", query = "SELECT o FROM Ofertas o WHERE o.detallesoferta = :detallesoferta")})
 public class Ofertas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -53,7 +55,7 @@ public class Ofertas implements Serializable {
     private String detallesoferta;
     @JoinColumn(name = "subastas_codigosubasta", referencedColumnName = "codigosubasta")
     @ManyToOne(optional = false)
-    private Subastas subastasCodigosubasta;
+    private Subastas subastas_codigosubasta;
     @JoinColumn(name = "proveedores_cedula", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Proveedores proveedoresCedula;
@@ -65,10 +67,13 @@ public class Ofertas implements Serializable {
         this.codigooferta = codigooferta;
     }
 
-    public Ofertas(Integer codigooferta, double valor, Date fechaoferta) {
+    public Ofertas(Integer codigooferta, double valor, Date fechaoferta, String detalles, Subastas sub, Proveedores pro) {
         this.codigooferta = codigooferta;
         this.valor = valor;
         this.fechaoferta = fechaoferta;
+        this.detallesoferta = detalles;
+        this.subastas_codigosubasta = sub;
+        this.proveedoresCedula = pro;
     }
 
     public Integer getCodigooferta() {
@@ -104,11 +109,11 @@ public class Ofertas implements Serializable {
     }
 
     public Subastas getSubastasCodigosubasta() {
-        return subastasCodigosubasta;
+        return subastas_codigosubasta;
     }
 
     public void setSubastasCodigosubasta(Subastas subastasCodigosubasta) {
-        this.subastasCodigosubasta = subastasCodigosubasta;
+        this.subastas_codigosubasta = subastasCodigosubasta;
     }
 
     public Proveedores getProveedoresCedula() {
@@ -143,5 +148,5 @@ public class Ofertas implements Serializable {
     public String toString() {
         return "Modelo.Ofertas[ codigooferta=" + codigooferta + " ]";
     }
-    
+
 }

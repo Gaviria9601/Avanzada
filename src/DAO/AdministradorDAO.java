@@ -31,6 +31,7 @@ public class AdministradorDAO extends Conexion {
 
     public Administradores search(String cedula) {
         try {
+            conectar();
             Administradores adm = entity.createNamedQuery("Administradores.findByCedula", Administradores.class)
                     .setParameter("cedula", cedula).getSingleResult();
             return adm;
@@ -41,6 +42,7 @@ public class AdministradorDAO extends Conexion {
 
     public Administradores searchNombre(String nombre) {
         try {
+            conectar();
             Administradores adm = entity.createNamedQuery("Administradores.findByNombre", Administradores.class)
                     .setParameter("nombre", nombre).getSingleResult();
             return adm;
@@ -51,6 +53,7 @@ public class AdministradorDAO extends Conexion {
 
     public Administradores searchLogin(String nickname, String contrasenia) {
         try {
+            conectar();
             Administradores adm = entity.createNamedQuery("Administradores.findByNombreyContrasenia", Administradores.class)
                     .setParameter("nombre", nickname)
                     .setParameter("contrasenia", contrasenia).getSingleResult();
@@ -63,6 +66,7 @@ public class AdministradorDAO extends Conexion {
     public boolean update(Administradores administradores) {
         try {
             //Si lo encuentra lo actualiza, si no existe lo crea
+            conectar();
             entity.merge(administradores);
             entity.getTransaction().commit();
             return true;

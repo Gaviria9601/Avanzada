@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "subastas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Subastas.findAll", query = "SELECT s FROM Subastas s"),
+    @NamedQuery(name = "Subastas.findAll", query = "SELECT s FROM Subastas s where s.estado='TRUE'"),
+    @NamedQuery(name = "Subastas.findAllEmpre", query = "SELECT s FROM Subastas s where s.estado='TRUE' and s.empresariosCedula.cedula=:cedula"),
     @NamedQuery(name = "Subastas.findByCodigosubasta", query = "SELECT s FROM Subastas s WHERE s.codigosubasta = :codigosubasta"),
     @NamedQuery(name = "Subastas.findByCantidadproductos", query = "SELECT s FROM Subastas s WHERE s.cantidadproductos = :cantidadproductos"),
     @NamedQuery(name = "Subastas.findByEstado", query = "SELECT s FROM Subastas s WHERE s.estado = :estado"),
@@ -43,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Subastas.findByFechaentrega", query = "SELECT s FROM Subastas s WHERE s.fechaentrega = :fechaentrega"),
     @NamedQuery(name = "Subastas.findByDescripcion", query = "SELECT s FROM Subastas s WHERE s.descripcion = :descripcion")})
 public class Subastas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +56,7 @@ public class Subastas implements Serializable {
     private int cantidadproductos;
     @Basic(optional = false)
     @Column(name = "estado")
-    private Character estado;
+    private boolean estado;
     @Basic(optional = false)
     @Column(name = "fechainicio")
     @Temporal(TemporalType.DATE)
@@ -69,7 +71,7 @@ public class Subastas implements Serializable {
     private Date fechaentrega;
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "subastasCodigosubasta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "subastas_codigosubasta")
     private Collection<Ofertas> ofertasCollection;
     @JoinColumn(name = "productos_codigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
@@ -85,13 +87,31 @@ public class Subastas implements Serializable {
         this.codigosubasta = codigosubasta;
     }
 
-    public Subastas(Integer codigosubasta, int cantidadproductos, Character estado, Date fechainicio, Date fechafinal, Date fechaentrega) {
-        this.codigosubasta = codigosubasta;
+    public Subastas(int cantidadproductos, boolean estado, Date fechainicio, Date fechafinal, Date fechaentrega, String descripcion,
+            Empresarios empre, Productos pro) {
         this.cantidadproductos = cantidadproductos;
         this.estado = estado;
         this.fechainicio = fechainicio;
         this.fechafinal = fechafinal;
         this.fechaentrega = fechaentrega;
+        this.descripcion = descripcion;
+        this.empresariosCedula = empre;
+        this.productosCodigo = pro;
+
+    }
+    
+    public Subastas(int codigoSub,int cantidadproductos, boolean estado, Date fechainicio, Date fechafinal, Date fechaentrega, String descripcion,
+            Empresarios empre, Productos pro) {
+        this.codigosubasta = codigoSub;
+        this.cantidadproductos = cantidadproductos;
+        this.estado = estado;
+        this.fechainicio = fechainicio;
+        this.fechafinal = fechafinal;
+        this.fechaentrega = fechaentrega;
+        this.descripcion = descripcion;
+        this.empresariosCedula = empre;
+        this.productosCodigo = pro;
+
     }
 
     public Integer getCodigosubasta() {
@@ -110,11 +130,11 @@ public class Subastas implements Serializable {
         this.cantidadproductos = cantidadproductos;
     }
 
-    public Character getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(Character estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
@@ -199,5 +219,5 @@ public class Subastas implements Serializable {
     public String toString() {
         return "Modelo.Subastas[ codigosubasta=" + codigosubasta + " ]";
     }
-    
+
 }
