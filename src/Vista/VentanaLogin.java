@@ -6,10 +6,13 @@
 package Vista;
 
 import Controlador.CtlLogin;
+import Controlador.CtlOferta;
 import Controlador.CtlSubasta;
 import Controlador.CtlVentana;
+import Modelo.Ofertas;
 import Modelo.Subastas;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -26,6 +29,8 @@ public class VentanaLogin extends javax.swing.JFrame {
     CtlVentana gestionVentana;
     CtlLogin gestionLogin;
     CtlSubasta gestionSubasta;
+    CtlOferta gestionOferta;
+    double valorOferta;
 
     public VentanaLogin() {
         initComponents();
@@ -34,9 +39,17 @@ public class VentanaLogin extends javax.swing.JFrame {
         gestionVentana = new CtlVentana();
         gestionLogin = new CtlLogin();
         gestionSubasta = new CtlSubasta();
+        gestionOferta = new CtlOferta();
         Date fechaActual = gestionVentana.generarFechaActual();
         List<Subastas> subastas = gestionSubasta.searchEnd(fechaActual);
         gestionVentana.cambiarEstadoSubastas(subastas);
+        List<Ofertas> oferta = new ArrayList<>();
+        for (int i = 0; i < subastas.size(); i++) {
+            oferta = gestionOferta.listOfertaSolicitud(subastas.get(i).getCodigosubasta());
+        }
+        if (!oferta.isEmpty()) {
+            valorOferta = gestionVentana.verificarOfertaMenor(oferta);
+        }
     }
 
     /**
@@ -159,7 +172,7 @@ public class VentanaLogin extends javax.swing.JFrame {
 
                 case "Proveedor":
                     JOptionPane.showMessageDialog(null, "Bienvenido Proveedor " + nickname);
-                    new VentanaProveedor().setVisible(true);
+                    new VentanaProveedor(nickname, valorOferta).setVisible(true);
                     limpiarCamposLogin();
                     break;
 

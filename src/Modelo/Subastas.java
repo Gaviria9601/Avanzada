@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Subastas.findByCantidadproductos", query = "SELECT s FROM Subastas s WHERE s.cantidadproductos = :cantidadproductos"),
     @NamedQuery(name = "Subastas.findByEstado", query = "SELECT s FROM Subastas s WHERE s.estado = :estado"),
     @NamedQuery(name = "Subastas.findByFechainicio", query = "SELECT s FROM Subastas s WHERE s.fechainicio = :fechainicio"),
-    @NamedQuery(name = "Subastas.findByFechafinal", query = "SELECT s FROM Subastas s WHERE s.fechafinal = :fechafinal"),
+    @NamedQuery(name = "Subastas.findByFechafinal", query = "SELECT s FROM Subastas s WHERE s.fechafinal <= :fechafinal"),
     @NamedQuery(name = "Subastas.findByFechaentrega", query = "SELECT s FROM Subastas s WHERE s.fechaentrega = :fechaentrega"),
     @NamedQuery(name = "Subastas.findByDescripcion", query = "SELECT s FROM Subastas s WHERE s.descripcion = :descripcion")})
 public class Subastas implements Serializable {

@@ -12,6 +12,7 @@ import Modelo.Ofertas;
 import Modelo.Productos;
 import Modelo.Subastas;
 import com.toedter.calendar.JDateChooser;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -177,6 +178,22 @@ public class CtlVentana {
                     sub.get(i).getEmpresariosCedula().getCedula(),
                     sub.get(i).getProductosCodigo().getCodigo());
         }
+    }
+    
+    /**
+     * Verifica la oferta menor del arraylist llegado
+     * @param ofertas, estrucutra que contiene los valores de ofertas
+     * @return la oferta menor
+     */
+    public double verificarOfertaMenor(List<Ofertas> ofertas) {
+        double ofertamenor = ofertas.get(0).getValor();
+        for (int i = 0; i < ofertas.size(); i++) {
+            if (ofertas.get(i).getValor() < ofertamenor) {
+                ofertamenor = ofertas.get(i).getValor();
+            }
+        }
+        return ofertamenor;
+
     }
 
     public CtlMunicipio getGestionmun() {

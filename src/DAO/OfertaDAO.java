@@ -54,6 +54,8 @@ public class OfertaDAO extends Conexion {
             return null;
         }
     }
+    
+    
 
     public boolean update(Ofertas oferta) {
         try {

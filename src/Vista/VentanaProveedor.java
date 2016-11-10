@@ -16,11 +16,15 @@ public class VentanaProveedor extends javax.swing.JFrame {
     /**
      * Creates new form VentanaProveedor
      */
-    public VentanaProveedor() {
+    double valorOferta;
+    String nickname;
+    public VentanaProveedor(String nickname,double valorOferta) {
         initComponents();
         setLocationRelativeTo(this);
         this.getContentPane().setBackground(Color.WHITE);// Color de fondo de la ventana
-
+        this.valorOferta = valorOferta;
+        this.nickname = nickname;
+        jLNombreProveedor.setText("Proveedor " + nickname);
     }
 
     /**
@@ -33,25 +37,10 @@ public class VentanaProveedor extends javax.swing.JFrame {
     private void initComponents() {
 
         jLNombreProveedor = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLNombreProveedor.setText("Proveedor");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -60,20 +49,14 @@ public class VentanaProveedor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(376, 376, 376)
                 .addComponent(jLNombreProveedor)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(400, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLNombreProveedor)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(364, Short.MAX_VALUE))
+                .addContainerGap(508, Short.MAX_VALUE))
         );
 
         pack();
@@ -82,7 +65,5 @@ public class VentanaProveedor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLNombreProveedor;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
