@@ -20,10 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Santiago Gaviria Oliveros
  */
 @Entity
-@Table(name = "CategoriasOfrecidas")
+@Table(name = "categoriasofrecidas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CategoriasOfrecidas.findAll", query = "SELECT c FROM CategoriasOfrecidas c"),
+    @NamedQuery(name = "CategoriasOfrecidas.findAll", query = "SELECT c FROM CategoriasOfrecidas c where c.proveedor.cedula=:cedulaPro"),
     @NamedQuery(name = "CategoriasOfrecidas.findByCategorias", query = "SELECT c FROM CategoriasOfrecidas c WHERE c.categorias = :categoriaCodigo"),
     @NamedQuery(name = "CategoriasOfrecidas.findByProveedores", query = "SELECT c FROM CategoriasOfrecidas c WHERE c.proveedor = :proveedorCedula"),})
 public class CategoriasOfrecidas implements Serializable {
@@ -48,6 +48,13 @@ public class CategoriasOfrecidas implements Serializable {
     public CategoriasOfrecidas(String proveedor, Integer categorias) {
         this.categoriasOfrecidasPK = new CategoriasOfrecidasPK(proveedor, categorias);
     }
+
+    public CategoriasOfrecidas(Proveedores proveedor, Categorias categorias) {
+        this.proveedor = proveedor;
+        this.categorias = categorias;
+    }
+    
+    
 
     public CategoriasOfrecidasPK getCategoriasOfrecidasPK() {
         return categoriasOfrecidasPK;

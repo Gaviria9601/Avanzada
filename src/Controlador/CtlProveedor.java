@@ -15,28 +15,32 @@ import java.util.List;
  * @author Santiago Gaviria Oliveros
  */
 public class CtlProveedor {
-    
+
     ProveedorDAO dao;
-    
-    public CtlProveedor(){
+
+    public CtlProveedor() {
         dao = new ProveedorDAO();
     }
-    
-     public boolean save(String cedula, String nombreCompleto, String nickname, String contrasenia,String direccion, String nombreEntidad,int Municipio) {
-         Proveedores proveedor= new Proveedores(cedula, nombreCompleto, nickname, contrasenia,direccion,nombreEntidad, new Municipios(Municipio));
+
+    public boolean save(String cedula, String nombreCompleto, String nickname, String contrasenia, String direccion, String nombreEntidad, int Municipio) {
+        Proveedores proveedor = new Proveedores(cedula, nombreCompleto, nickname, contrasenia, direccion, nombreEntidad, new Municipios(Municipio));
         return dao.save(proveedor);
+    }
+
+    public Proveedores searchNicknmae(String nickname) {
+        return dao.searchNickname(nickname);
     }
 
     public Proveedores search(String cedula) {
         return dao.search(cedula);
     }
-    
-    public Proveedores searchLogin(String nickname,String contrasenia) {
+
+    public Proveedores searchLogin(String nickname, String contrasenia) {
         return dao.searchLogin(nickname, contrasenia);
     }
 
-    public boolean update(String cedula, String nombreCompleto, String nickname, String contrasenia,String direccion, String nombreEntidad,int Municipio) {
-        Proveedores proveedor = new Proveedores(cedula, nombreCompleto, nickname, contrasenia,direccion, nombreEntidad, new Municipios(Municipio));
+    public boolean update(String cedula, String nombreCompleto, String nickname, String contrasenia, String direccion, String nombreEntidad, int Municipio) {
+        Proveedores proveedor = new Proveedores(cedula, nombreCompleto, nickname, contrasenia, direccion, nombreEntidad, new Municipios(Municipio));
         return dao.update(proveedor);
     }
 
@@ -47,5 +51,5 @@ public class CtlProveedor {
     public List<Proveedores> list() {
         return dao.list();
     }
-    
+
 }

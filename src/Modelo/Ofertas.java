@@ -32,10 +32,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Ofertas.findAll", query = "SELECT o FROM Ofertas o"),
     @NamedQuery(name = "Ofertas.findByCodigooferta", query = "SELECT o FROM Ofertas o WHERE o.codigooferta = :codigooferta"),
-    @NamedQuery(name = "Ofertas.findByOfertaSubasta", query = "SELECT o FROM Ofertas o WHERE o.subastas_codigosubasta.codigosubasta = :codSubasta"),
     @NamedQuery(name = "Ofertas.findByValor", query = "SELECT o FROM Ofertas o WHERE o.valor = :valor"),
     @NamedQuery(name = "Ofertas.findByFechaoferta", query = "SELECT o FROM Ofertas o WHERE o.fechaoferta = :fechaoferta"),
-    @NamedQuery(name = "Ofertas.findByDetallesoferta", query = "SELECT o FROM Ofertas o WHERE o.detallesoferta = :detallesoferta")})
+    @NamedQuery(name = "Ofertas.findByOferta", query = "SELECT o FROM Ofertas o join o.subastas_codigosubasta su where su.codigosubasta= :codsubasta"),
+    @NamedQuery(name = "Ofertas.findByOfertafull", query = "SELECT o FROM Ofertas o join o.proveedoresCedula pro where pro.cedula=:cedula"),
+    @NamedQuery(name = "Ofertas.findByDetallesoferta", query = "SELECT o FROM Ofertas o WHERE o.detallesoferta = :detallesoferta"),})
 public class Ofertas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +60,9 @@ public class Ofertas implements Serializable {
     @JoinColumn(name = "proveedores_cedula", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Proveedores proveedoresCedula;
+    @Column(name = "resultado")
+    private String resultado;
+    @Basic(optional = false)
 
     public Ofertas() {
     }
@@ -67,15 +71,26 @@ public class Ofertas implements Serializable {
         this.codigooferta = codigooferta;
     }
 
-    public Ofertas(Integer codigooferta, double valor, Date fechaoferta, String detalles, Subastas sub, Proveedores pro) {
+    public Ofertas(double valor, Date fechaoferta, String detalles, Subastas sub, Proveedores pro,String resultado) {
+        this.valor = valor;
+        this.fechaoferta = fechaoferta;
+        this.detallesoferta = detalles;
+        this.subastas_codigosubasta = sub;
+        this.proveedoresCedula = pro;
+        this.resultado= resultado;
+    }
+
+    public Ofertas(Integer codigooferta, double valor, Date fechaoferta, String detalles, Subastas sub, Proveedores pro,String res) {
         this.codigooferta = codigooferta;
         this.valor = valor;
         this.fechaoferta = fechaoferta;
         this.detallesoferta = detalles;
         this.subastas_codigosubasta = sub;
         this.proveedoresCedula = pro;
+        this.resultado = res;
     }
 
+   
     public Integer getCodigooferta() {
         return codigooferta;
     }
@@ -123,6 +138,16 @@ public class Ofertas implements Serializable {
     public void setProveedoresCedula(Proveedores proveedoresCedula) {
         this.proveedoresCedula = proveedoresCedula;
     }
+
+    public String getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(String resultado) {
+        this.resultado = resultado;
+    }
+    
+    
 
     @Override
     public int hashCode() {

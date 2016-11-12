@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Subastas.findAll", query = "SELECT s FROM Subastas s where s.estado='TRUE'"),
     @NamedQuery(name = "Subastas.findAllEmpre", query = "SELECT s FROM Subastas s where s.estado='TRUE' and s.empresariosCedula.cedula=:cedula"),
+    @NamedQuery(name = "Subastas.findAllArea", query = "select s from Subastas s join s.productosCodigo po join po.categorias_Codigo ca join ca.proveedoresCollection pro where ca.codigo=:areacodigo and pro.cedula=:cedula and s.estado=true"),
     @NamedQuery(name = "Subastas.findByCodigosubasta", query = "SELECT s FROM Subastas s WHERE s.codigosubasta = :codigosubasta"),
     @NamedQuery(name = "Subastas.findByCantidadproductos", query = "SELECT s FROM Subastas s WHERE s.cantidadproductos = :cantidadproductos"),
     @NamedQuery(name = "Subastas.findByEstado", query = "SELECT s FROM Subastas s WHERE s.estado = :estado"),
@@ -99,8 +100,8 @@ public class Subastas implements Serializable {
         this.productosCodigo = pro;
 
     }
-    
-    public Subastas(int codigoSub,int cantidadproductos, boolean estado, Date fechainicio, Date fechafinal, Date fechaentrega, String descripcion,
+
+    public Subastas(int codigoSub, int cantidadproductos, boolean estado, Date fechainicio, Date fechafinal, Date fechaentrega, String descripcion,
             Empresarios empre, Productos pro) {
         this.codigosubasta = codigoSub;
         this.cantidadproductos = cantidadproductos;

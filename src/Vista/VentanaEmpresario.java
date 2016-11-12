@@ -360,13 +360,12 @@ public class VentanaEmpresario extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jBAceptarOferta)
-                        .addGap(403, 403, 403))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jBConsultarOfertas)
-                        .addGap(421, 421, 421))))
+                .addComponent(jBAceptarOferta)
+                .addGap(403, 403, 403))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(413, 413, 413)
+                .addComponent(jBConsultarOfertas)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,18 +459,14 @@ public class VentanaEmpresario extends javax.swing.JFrame {
     private void jBConsultarOfertasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConsultarOfertasActionPerformed
         // TODO add your handling code here:
         if (gestionVentana.validarSeleccionSolicitud(jTSubasta)) {
-            if (gestionOferta.searchOfertaSubasta(codigoSolicitudOferta) != null) {
-                JOptionPane.showMessageDialog(null, "Oferta Encontrada");
-                System.out.println(codigoSolicitudOferta);
-                for (int i = 0; i < gestionOferta.listOfertaSolicitud(codigoSolicitudOferta).size(); i++) {
-                    System.out.println(gestionOferta.listOfertaSolicitud(codigoSolicitudOferta).get(i).getCodigooferta());
-                }
+            if (!gestionOferta.listOfertaSolicitud(codigoSolicitudOferta).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Ofertas Encontradas");
                 jTOfertas.setModel(gestionVentana.listarOfertasSubasta(gestionOferta.listOfertaSolicitud(codigoSolicitudOferta)));
             } else {
                 JOptionPane.showMessageDialog(null, "No hay Ofertas asociadas a la solicitud seleccionada");
                 jTADetallesOferta.setText(null);
                 DefaultTableModel vacio = new DefaultTableModel();
-                jTOfertas.setModel(vacio);
+                jTOfertas.setModel(gestionVentana.listarOfertasSubasta(gestionOferta.listOfertaSolicitud(codigoSolicitudOferta)));
             }
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una Solicitud para consultar las Ofertas");
@@ -507,8 +502,10 @@ public class VentanaEmpresario extends javax.swing.JFrame {
                             + " cerrado correctamente", "Ganador Proveedor " + ofe.getProveedoresCedula().getNombrecompleto()
                             + " de la Entidad " + ofe.getProveedoresCedula().getNombreentidad(), JOptionPane.INFORMATION_MESSAGE);
                     jTSubasta.setModel(gestionVentana.listarSubastas(gestionEmpresario.searchNombre(empresario).getCedula()));
+                    
                     DefaultTableModel vacio = new DefaultTableModel();
                     jTOfertas.setModel(vacio);
+                    jTADetallesOferta.setText(null);
                 } else {
                     JOptionPane.showMessageDialog(null, "error");
                 }

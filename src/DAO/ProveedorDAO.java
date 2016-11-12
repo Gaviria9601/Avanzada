@@ -45,6 +45,19 @@ public class ProveedorDAO extends Conexion {
         }
     }
     
+    public Proveedores searchNickname(String nickname) {
+        try {
+             conectar();
+            Proveedores proveedor = entity.createNamedQuery("Proveedores.findByNickname", Proveedores.class)
+                    .setParameter("nickname", nickname).getSingleResult();
+            desconectar();
+            return proveedor;
+        } catch (Exception e) {
+            desconectar();
+            return null;
+        }
+    }
+    
      public Proveedores searchLogin(String nickname, String contrasenia ){
         try{
             conectar();

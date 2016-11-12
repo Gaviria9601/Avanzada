@@ -6,7 +6,9 @@
 package DAO;
 
 import Infraestructura.Conexion;
+import Modelo.CategoriasOfrecidas;
 import Modelo.Subastas;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +16,12 @@ import java.util.List;
  *
  * @author Santiago Gaviria Oliveros
  */
-public class SubastaDAO extends Conexion{
-    
-    
-    public SubastaDAO(){
+public class SubastaDAO extends Conexion {
+
+    public SubastaDAO() {
         conectar();
     }
-    
+
     public boolean save(Subastas subasta) {
         try {
             conectar();
@@ -44,11 +45,11 @@ public class SubastaDAO extends Conexion{
             return null;
         }
     }
-    
-     public List<Subastas> searchEnd(Date fecha) {
+
+    public List<Subastas> searchEnd(Date fecha) {
         try {
             conectar();
-            List<Subastas> list= entity.createNamedQuery("Subastas.findByFechafinal", Subastas.class)
+            List<Subastas> list = entity.createNamedQuery("Subastas.findByFechafinal", Subastas.class)
                     .setParameter("fechafinal", fecha).getResultList();
             desconectar();
             return list;
@@ -57,7 +58,6 @@ public class SubastaDAO extends Conexion{
         }
     }
 
-    
     public boolean update(Subastas subasta) {
         try {
             if (search(subasta.getCodigosubasta()) != null) {
@@ -100,5 +100,24 @@ public class SubastaDAO extends Conexion{
         }
     }
 
+    public List<Subastas> listSubastasArea(List<CategoriasOfrecidas> codigoArea, String cedula) {
+        List<Subastas> listRetorno = new ArrayList<>();
+        try {
+            conectar();
+            for (int i = 0; i < codigoArea.size(); i++) {
+                List<Subastas> list = entity.createNamedQuery("Subastas.findAllArea", Subastas.class)
+                        .setParameter("areacodigo", codigoArea.get(i).getCategorias().getCodigo())
+                        .setParameter("cedula", cedula)
+                        .getResultList();
+                listRetorno.addAll(list);
+            }
+
+            return listRetorno;
+        } catch (Exception e) {
+            return null;
+        }
+    }
     
+    
+
 }

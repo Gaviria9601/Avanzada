@@ -6,10 +6,12 @@
 package Controlador;
 
 import Modelo.Categorias;
+import Modelo.CategoriasOfrecidas;
 import Modelo.Departamentos;
 import Modelo.Municipios;
 import Modelo.Ofertas;
 import Modelo.Productos;
+import Modelo.Proveedores;
 import Modelo.Subastas;
 import com.toedter.calendar.JDateChooser;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class CtlVentana {
     CtlDepartamento gestiondepto;
     CtlMunicipio gestionmun;
     CtlSubasta gestionSubasta;
+    CtlCategoriaOfrecida gestionCateOfrecida;
 
     public CtlVentana() {
         gestionCategoria = new CtlCategoria();
@@ -43,6 +46,7 @@ public class CtlVentana {
         gestionmun = new CtlMunicipio();
         gestionProducto = new CtlProducto();
         gestionSubasta = new CtlSubasta();
+        gestionCateOfrecida = new CtlCategoriaOfrecida();
     }
 
     /**
@@ -73,6 +77,10 @@ public class CtlVentana {
     public boolean verificarDatosEnvioSolicitd(JList nombre, JDateChooser fechaE, JDateChooser fechaF, JSpinner cant, JTextArea des) {
         return nombre.getSelectedIndex() == -1 || fechaE.getDate() == null || fechaF.getDate() == null || Integer.parseInt(cant.getValue() + "") == 0
                 || des.getText().isEmpty();
+    }
+
+    public boolean verificarDatosEnvioOferta(JTextField oferta, JTextArea detalles) {
+        return oferta.getText().isEmpty() || detalles.getText().isEmpty();
     }
 
     public boolean verificarDatosIngreso(JTextField usuario, JPasswordField password) {
@@ -179,9 +187,10 @@ public class CtlVentana {
                     sub.get(i).getProductosCodigo().getCodigo());
         }
     }
-    
+
     /**
      * Verifica la oferta menor del arraylist llegado
+     *
      * @param ofertas, estrucutra que contiene los valores de ofertas
      * @return la oferta menor
      */
@@ -272,9 +281,56 @@ public class CtlVentana {
         return temporal;
     }
 
+    public List<CategoriasOfrecidas> listarAreasRegistradas(JTable areas, Proveedores pro) {
+        List<CategoriasOfrecidas> cateOfrecida = gestionCateOfrecida.list(pro.getCedula());
+        DefaultTableModel temporal;
+        String nombreColumnas[] = {"Codigo Categoria", "Nombre"};
+        temporal = new DefaultTableModel(new Object[][]{}, nombreColumnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        for (int i = 0; i < cateOfrecida.size(); i++) {
+            temporal.addRow(new Object[]{
+                cateOfrecida.get(i).getCategorias().getCodigo(),
+                cateOfrecida.get(i).getCategorias().getNombre(),});
+        }
+        areas.setModel(temporal);
+        return cateOfrecida;
+    }
+
+    public void cargarSubastasProveedorArea(JTable subastas, List<CategoriasOfrecidas> codigoArea, Proveedores pro) {
+        List<Subastas> subasta = gestionSubasta.listSubastasArea(codigoArea, pro.getCedula());
+        DefaultTableModel temporal;
+        String nombreColumnas[] = {"Codigo Subasta", "Cantidad", "Estado",
+            "Fecha Inicio", "Fecha Final", "Fecha Entrega", "Producto", "Categoria", "Empresario"};
+        temporal = new DefaultTableModel(new Object[][]{}, nombreColumnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        for (int i = 0; i < subasta.size(); i++) {
+            temporal.addRow(new Object[]{
+                subasta.get(i).getCodigosubasta(),
+                subasta.get(i).getCantidadproductos(),
+                estado(subasta.get(i).getEstado()),
+                subasta.get(i).getFechainicio(),
+                subasta.get(i).getFechafinal(),
+                subasta.get(i).getFechaentrega(),
+                subasta.get(i).getProductosCodigo().getNombreproducto(),
+                subasta.get(i).getProductosCodigo().getCategoriasCodigo().getNombre(),
+                subasta.get(i).getEmpresariosCedula().getNombrecompleto()
+            });
+        }
+        subastas.setModel(temporal);
+    }
+
     /**
      * lista las subastas
      *
+     * @param cedula
      * @return un modelo de informacion
      */
     public DefaultTableModel listarSubastas(String cedula) {
@@ -297,6 +353,51 @@ public class CtlVentana {
                 subasta.get(i).getFechafinal(),
                 subasta.get(i).getFechaentrega(),
                 subasta.get(i).getProductosCodigo().getNombreproducto(),});
+        }
+        return temporal;
+
+    }
+
+    /**
+     * lista las subastas
+     *
+     * @param ofe
+     * @return un modelo de informacion
+     */
+    public DefaultTableModel listarSubastasProParticipo(List<Ofertas> ofe, double valor) {
+        DefaultTableModel temporal;
+        String nombreColumnas[] = {"Codigo Subasta", "Cantidad",
+            "Fecha Inicio", "Fecha Final", "Fecha Entrega", "Producto", "Categoria", "Empresario", "Resultado"};
+        temporal = new DefaultTableModel(new Object[][]{}, nombreColumnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        for (int i = 0; i < ofe.size(); i++) {
+            if (!ofe.get(i).getSubastasCodigosubasta().getEstado()) {
+                if (valor == ofe.get(i).getValor()) {
+                    temporal.addRow(new Object[]{
+                        ofe.get(i).getSubastasCodigosubasta().getCodigosubasta(),
+                        ofe.get(i).getSubastasCodigosubasta().getCantidadproductos(),
+                        ofe.get(i).getSubastasCodigosubasta().getFechainicio(),
+                        ofe.get(i).getSubastasCodigosubasta().getFechafinal(),
+                        ofe.get(i).getSubastasCodigosubasta().getFechaentrega(),
+                        ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getNombreproducto(),
+                        ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getCategoriasCodigo().getNombre(),
+                        ofe.get(i).getSubastasCodigosubasta().getEmpresariosCedula().getNombrecompleto(), "Gano",});
+                } else if (valor != ofe.get(i).getValor()) {
+                    temporal.addRow(new Object[]{
+                        ofe.get(i).getSubastasCodigosubasta().getCodigosubasta(),
+                        ofe.get(i).getSubastasCodigosubasta().getCantidadproductos(),
+                        ofe.get(i).getSubastasCodigosubasta().getFechainicio(),
+                        ofe.get(i).getSubastasCodigosubasta().getFechafinal(),
+                        ofe.get(i).getSubastasCodigosubasta().getFechaentrega(),
+                        ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getNombreproducto(),
+                        ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getCategoriasCodigo().getNombre(),
+                        ofe.get(i).getSubastasCodigosubasta().getEmpresariosCedula().getNombrecompleto(), "Perdio",});
+                }
+            }
         }
         return temporal;
 

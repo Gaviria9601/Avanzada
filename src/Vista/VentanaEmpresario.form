@@ -291,16 +291,13 @@
                   <Component id="jPanel3" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jBAceptarOferta" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="403" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jBConsultarOfertas" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="421" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="jBAceptarOferta" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="403" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="413" max="-2" attributes="0"/>
+                      <Component id="jBConsultarOfertas" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

@@ -45,17 +45,16 @@ public class OfertaDAO extends Conexion {
     }
 
     public Ofertas searchOfertaSubasta(int subastasCodigosubasta) {
+        System.out.println(subastasCodigosubasta);
         try {
             conectar();
-            Ofertas ofe = entity.createNamedQuery("Ofertas.findByOfertaSubasta", Ofertas.class)
-                    .setParameter("codSubasta", subastasCodigosubasta).getSingleResult();
+            Ofertas ofe = entity.createNamedQuery("Ofertas.findByOferta", Ofertas.class)
+                    .setParameter("codsubasta", subastasCodigosubasta).getSingleResult();
             return ofe;
         } catch (Exception e) {
             return null;
         }
     }
-    
-    
 
     public boolean update(Ofertas oferta) {
         try {
@@ -90,10 +89,9 @@ public class OfertaDAO extends Conexion {
     public List<Ofertas> listarOfertaSolicitud(int subastasCodigosubasta) {
         try {
             conectar();
-            List<Ofertas> list = entity.createNamedQuery("Ofertas.findByOfertaSubasta", Ofertas.class)
-                    .setParameter("codSubasta", subastasCodigosubasta)
+            List<Ofertas> list = entity.createNamedQuery("Ofertas.findByOferta", Ofertas.class)
+                    .setParameter("codsubasta", subastasCodigosubasta)
                     .getResultList();
-            desconectar();
             return list;
         } catch (Exception e) {
             return null;
@@ -105,6 +103,19 @@ public class OfertaDAO extends Conexion {
         try {
             conectar();
             List<Ofertas> list = entity.createNamedQuery("Ofertas.findAll", Ofertas.class).getResultList();
+            desconectar();
+            return list;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    public List<Ofertas> listPro(String cedula) {
+        try {
+            conectar();
+            List<Ofertas> list = entity.createNamedQuery("Ofertas.findByOfertafull", Ofertas.class)
+                    .setParameter("cedula", cedula)
+                    .getResultList();
             desconectar();
             return list;
         } catch (Exception e) {

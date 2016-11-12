@@ -5,7 +5,21 @@
  */
 package Vista;
 
+import Controlador.CtlCategoria;
+import Controlador.CtlCategoriaOfrecida;
+import Controlador.CtlOferta;
+import Controlador.CtlProveedor;
+import Controlador.CtlSubasta;
+import Controlador.CtlVentana;
+import Modelo.Categorias;
+import Modelo.CategoriasOfrecidas;
+import Modelo.Ofertas;
+import Modelo.Proveedores;
+import Modelo.Subastas;
 import java.awt.Color;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,15 +30,41 @@ public class VentanaProveedor extends javax.swing.JFrame {
     /**
      * Creates new form VentanaProveedor
      */
+    CtlCategoria gestionCategoria;
+    CtlVentana gestionVentana;
+    CtlCategoriaOfrecida gestionCateOfre;
+    CtlProveedor gestionProveedor;
+    CtlSubasta gestionSubasta;
+    CtlOferta gestionOferta;
+    List<CategoriasOfrecidas> cateOfre;
     double valorOferta;
     String nickname;
-    public VentanaProveedor(String nickname,double valorOferta) {
+    Proveedores pro;
+    Subastas subOfertar;
+    List<Ofertas> ofertasPro;
+
+    public VentanaProveedor(String nickname, double valorOferta) {
         initComponents();
         setLocationRelativeTo(this);
+        gestionCategoria = new CtlCategoria();
+        gestionVentana = new CtlVentana();
+        gestionCateOfre = new CtlCategoriaOfrecida();
+        gestionProveedor = new CtlProveedor();
+        gestionSubasta = new CtlSubasta();
+        gestionOferta = new CtlOferta();
         this.getContentPane().setBackground(Color.WHITE);// Color de fondo de la ventana
         this.valorOferta = valorOferta;
         this.nickname = nickname;
-        jLNombreProveedor.setText("Proveedor " + nickname);
+        jLNombreProveedor.setText("Proveedor@ " + nickname);
+        pro = gestionProveedor.searchNicknmae(nickname);
+        gestionVentana.cargarCategorias(jCBCategorias);
+        cateOfre = gestionVentana.listarAreasRegistradas(jTAreasOfrecidas, pro);
+        gestionVentana.cargarSubastasProveedorArea(jTSubastas, cateOfre, pro);
+        jTFFecha.setEnabled(false);
+        jTFFecha.setText(gestionVentana.generarFechaActualCadena());
+        ofertasPro = gestionOferta.listPro(pro.getCedula());
+        System.out.println(valorOferta);
+        jTSubastasParticipo.setModel(gestionVentana.listarSubastasProParticipo(ofertasPro,valorOferta));
     }
 
     /**
@@ -37,33 +77,551 @@ public class VentanaProveedor extends javax.swing.JFrame {
     private void initComponents() {
 
         jLNombreProveedor = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTAreasOfrecidas = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jCBCategorias = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTFDescripcionCate = new javax.swing.JTextArea();
+        jBRegistrarArea = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTSubastas = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTADescripcionSubasta = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTADetallesOferta = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        jTFValorOferta = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTFFecha = new javax.swing.JTextField();
+        jBEnviarOferta = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTSubastasParticipo = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLNombreProveedor.setText("Proveedor");
+
+        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Areas Ofrecidas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jTAreasOfrecidas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTAreasOfrecidas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTAreasOfrecidasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTAreasOfrecidas);
+
+        jLabel1.setText("Seleccione el Area para quitarla");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(89, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(246, 246, 246))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro de Areas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jLabel6.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
+        jLabel6.setText("Seleccione la Categoria:");
+
+        jCBCategorias.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
+        jCBCategorias.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCBCategoriasItemStateChanged(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Maiandra GD", 1, 12)); // NOI18N
+        jLabel7.setText("Descripción Categoria");
+
+        jTFDescripcionCate.setColumns(20);
+        jTFDescripcionCate.setFont(new java.awt.Font("Maiandra GD", 0, 12)); // NOI18N
+        jTFDescripcionCate.setRows(5);
+        jTFDescripcionCate.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTFDescripcionCate.setEnabled(false);
+        jScrollPane4.setViewportView(jTFDescripcionCate);
+
+        jBRegistrarArea.setText("Agregar");
+        jBRegistrarArea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBRegistrarAreaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(173, 173, 173)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCBCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7)
+                    .addComponent(jBRegistrarArea))
+                .addContainerGap(183, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jCBCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBRegistrarArea)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(150, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(86, 86, 86))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Areas Ofrecidas", jPanel1);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Subastas Abiertas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
+
+        jTSubastas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTSubastas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTSubastasMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTSubastas);
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Descripción de la Subasta", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
+
+        jTADescripcionSubasta.setEditable(false);
+        jTADescripcionSubasta.setColumns(20);
+        jTADescripcionSubasta.setRows(5);
+        jScrollPane6.setViewportView(jTADescripcionSubasta);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+        );
+
+        jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel8.setText("Seleccione la Subasta para Ofertar");
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Proponer Oferta", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 1, 14), new java.awt.Color(255, 0, 0))); // NOI18N
+
+        jTADetallesOferta.setColumns(20);
+        jTADetallesOferta.setRows(5);
+        jScrollPane2.setViewportView(jTADetallesOferta);
+
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel2.setText("Valor Oferta: $");
+
+        jTFValorOferta.setFont(new java.awt.Font("Century", 0, 12)); // NOI18N
+        jTFValorOferta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTFValorOfertaKeyTyped(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel3.setText("Detalles Oferta");
+
+        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel9.setText("Fecha:");
+
+        jTFFecha.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+
+        jBEnviarOferta.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jBEnviarOferta.setText("ENVIAR OFERTA");
+        jBEnviarOferta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEnviarOfertaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(jLabel3)
+                        .addGap(139, 139, 139)))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jTFFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBEnviarOferta))
+                    .addComponent(jTFValorOferta, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jBEnviarOferta)
+                            .addComponent(jLabel9)
+                            .addComponent(jTFFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jTFValorOferta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(62, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(239, 239, 239)
+                                .addComponent(jLabel8)))
+                        .addGap(130, 130, 130))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57))))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Envio Oferta", jPanel3);
+
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Subastas Participadas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jTSubastasParticipo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTSubastasParticipo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTSubastasParticipoMouseClicked(evt);
+            }
+        });
+        jScrollPane7.setViewportView(jTSubastasParticipo);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(166, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Estado Subastas", jPanel7);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(376, 376, 376)
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(454, 454, 454)
                 .addComponent(jLNombreProveedor)
-                .addContainerGap(400, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLNombreProveedor)
-                .addContainerGap(508, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTSubastasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTSubastasMouseClicked
+        // TODO add your handling code here:
+        int pos = jTSubastas.getSelectedRow();
+        subOfertar = gestionSubasta.search(Integer.parseInt(jTSubastas.getValueAt(pos, 0) + ""));
+        jTADescripcionSubasta.setText(subOfertar.getDescripcion());
+    }//GEN-LAST:event_jTSubastasMouseClicked
+
+    private void jBRegistrarAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRegistrarAreaActionPerformed
+        // TODO add your handling code here:
+        if (jCBCategorias.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Elija una categoria para agregarla");
+        } else {
+            Categorias cate = gestionCategoria.searchNombre((String) jCBCategorias.getSelectedItem());
+            if (gestionCateOfre.save(pro.getCedula(), cate.getCodigo())) {
+                JOptionPane.showMessageDialog(null, "El Area se ha Agregado");
+                cateOfre = gestionVentana.listarAreasRegistradas(jTAreasOfrecidas, pro);
+                gestionVentana.cargarSubastasProveedorArea(jTSubastas, cateOfre, pro);
+            } else {
+                JOptionPane.showMessageDialog(null, "El Area ya se encuentra agregada");
+            }
+        }
+    }//GEN-LAST:event_jBRegistrarAreaActionPerformed
+
+    private void jCBCategoriasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBCategoriasItemStateChanged
+        // TODO add your handling code here:
+        try {
+            if (jCBCategorias.getSelectedIndex() == 0) {
+                jTFDescripcionCate.setText(null);
+            } else {
+                String cate = (String) jCBCategorias.getSelectedItem();
+                Categorias categ = gestionCategoria.BuscarDes(cate);
+                jTFDescripcionCate.setText(categ.getDescripcion());
+            }
+        } catch (NumberFormatException | NullPointerException e) {
+            gestionCategoria = new CtlCategoria();
+        }
+    }//GEN-LAST:event_jCBCategoriasItemStateChanged
+
+    private void jTAreasOfrecidasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTAreasOfrecidasMouseClicked
+        // TODO add your handling code here:
+        int res = JOptionPane.showConfirmDialog(null, "Desea Quitar el Area Seleccioanda", "Areas", 0);
+        if (res == 0) {
+            int posSolicitud = jTAreasOfrecidas.getSelectedRow();
+            Categorias cate = gestionCategoria.searchNombre(jTAreasOfrecidas.getValueAt(posSolicitud, 1) + "");
+            if (gestionCateOfre.delete(pro.getCedula(), cate.getCodigo())) {
+                JOptionPane.showMessageDialog(null, "El Area se ha quitado");
+                cateOfre = gestionVentana.listarAreasRegistradas(jTAreasOfrecidas, pro);
+                gestionVentana.cargarSubastasProveedorArea(jTSubastas, cateOfre, pro);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al Quitar");
+            }
+        }
+    }//GEN-LAST:event_jTAreasOfrecidasMouseClicked
+
+    private void jTFValorOfertaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFValorOfertaKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTFValorOfertaKeyTyped
+
+    private void jBEnviarOfertaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEnviarOfertaActionPerformed
+        // TODO add your handling code here:
+        if (gestionVentana.validarSeleccionSolicitud(jTSubastas)) {
+            if (gestionVentana.verificarDatosEnvioOferta(jTFValorOferta, jTADetallesOferta)) {
+                JOptionPane.showMessageDialog(null, "Digite todos los campos para enviar la Oferta");
+            } else {
+                double valor = Double.parseDouble(jTFValorOferta.getText());
+                Date fecha = gestionVentana.generarFechaActual();
+                String detallesOferta = jTADetallesOferta.getText();
+                if (gestionOferta.saveOferta(valor, fecha, detallesOferta, subOfertar.getCodigosubasta(), pro.getCedula())) {
+                    JOptionPane.showMessageDialog(null, "Se ha enviado la Oferta a la Subasta con codigo " + subOfertar.getCodigosubasta());
+                    ofertasPro = gestionOferta.listPro(pro.getCedula());
+                    jTSubastasParticipo.setModel(gestionVentana.listarSubastasProParticipo(ofertasPro,valorOferta));
+                    limpiarCamposEnvioOferta();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Hubo un error");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione la Subasta para realizar la Oferta");
+        }
+    }//GEN-LAST:event_jBEnviarOfertaActionPerformed
+
+    private void jTSubastasParticipoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTSubastasParticipoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTSubastasParticipoMouseClicked
+
+    /**
+     * limpia los campos de envio de una oferta
+     */
+    public void limpiarCamposEnvioOferta() {
+        jTFValorOferta.setText(null);
+        jTADetallesOferta.setText(null);
+        jTADescripcionSubasta.setText(null);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBEnviarOferta;
+    private javax.swing.JButton jBRegistrarArea;
+    private javax.swing.JComboBox jCBCategorias;
     private javax.swing.JLabel jLNombreProveedor;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JTextArea jTADescripcionSubasta;
+    private javax.swing.JTextArea jTADetallesOferta;
+    private javax.swing.JTable jTAreasOfrecidas;
+    private javax.swing.JTextArea jTFDescripcionCate;
+    private javax.swing.JTextField jTFFecha;
+    private javax.swing.JTextField jTFValorOferta;
+    private javax.swing.JTable jTSubastas;
+    private javax.swing.JTable jTSubastasParticipo;
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

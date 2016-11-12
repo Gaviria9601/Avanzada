@@ -12,6 +12,7 @@ import Controlador.CtlVentana;
 import Modelo.Administradores;
 import Modelo.Categorias;
 import Modelo.Productos;
+import Modelo.Proveedores;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;

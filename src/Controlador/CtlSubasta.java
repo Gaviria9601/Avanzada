@@ -6,6 +6,7 @@
 package Controlador;
 
 import DAO.SubastaDAO;
+import Modelo.CategoriasOfrecidas;
 import Modelo.Empresarios;
 import Modelo.Productos;
 import Modelo.Subastas;
@@ -34,14 +35,14 @@ public class CtlSubasta {
     public Subastas search(int codigo) {
         return dao.search(codigo);
     }
-    
+
     public List<Subastas> searchEnd(Date fecha) {
         return dao.searchEnd(fecha);
     }
 
-    public boolean update(int codigoSubasta,int cantidad, boolean estado, Date fechaInicio, Date fechaFinal, Date fechEntrega, String Descripcion, String Empresario,
+    public boolean update(int codigoSubasta, int cantidad, boolean estado, Date fechaInicio, Date fechaFinal, Date fechEntrega, String Descripcion, String Empresario,
             int codigo) {
-        Subastas subasta = new Subastas(codigoSubasta,cantidad, estado, fechaInicio, fechaFinal, fechEntrega, Descripcion,
+        Subastas subasta = new Subastas(codigoSubasta, cantidad, estado, fechaInicio, fechaFinal, fechEntrega, Descripcion,
                 new Empresarios(Empresario), new Productos(codigo));
         return dao.update(subasta);
     }
@@ -54,4 +55,9 @@ public class CtlSubasta {
         return dao.list(cedula);
     }
 
+    public List<Subastas> listSubastasArea(List<CategoriasOfrecidas> codigoArea, String cedula) {
+        return dao.listSubastasArea(codigoArea, cedula);
+    }
+
+   
 }

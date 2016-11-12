@@ -34,6 +34,7 @@ public class EmpresarioDAO extends Conexion {
 
     public Empresarios search(String cedula) {
         try {
+            conectar();
             Empresarios emp = entity.createNamedQuery("Empresarios.findByCedula", Empresarios.class)
                     .setParameter("cedula", cedula).getSingleResult();
             desconectar();
