@@ -494,6 +494,7 @@ public class VentanaEmpresario extends javax.swing.JFrame {
             if (opc == 0) {
                 Ofertas ofe = gestionOferta.searchOferta(codigoOferta);
                 Subastas sub = ofe.getSubastasCodigosubasta();
+                List<Ofertas> oferPer = gestionOferta.listOfertaSolicitud(sub.getCodigosubasta());
                 if (gestionSubasta.update(sub.getCodigosubasta(), sub.getCantidadproductos(), false, sub.getFechainicio(),
                         sub.getFechafinal(), sub.getFechaentrega(), sub.getDescripcion(),
                         sub.getEmpresariosCedula().getCedula(), sub.getProductosCodigo().getCodigo())) {
@@ -502,7 +503,13 @@ public class VentanaEmpresario extends javax.swing.JFrame {
                             + " cerrado correctamente", "Ganador Proveedor " + ofe.getProveedoresCedula().getNombrecompleto()
                             + " de la Entidad " + ofe.getProveedoresCedula().getNombreentidad(), JOptionPane.INFORMATION_MESSAGE);
                     jTSubasta.setModel(gestionVentana.listarSubastas(gestionEmpresario.searchNombre(empresario).getCedula()));
-                    
+                    gestionOferta.updateOferta(ofe.getCodigooferta(),
+                            ofe.getValor(),
+                            ofe.getFechaoferta(),
+                            ofe.getDetallesoferta(),
+                            ofe.getSubastasCodigosubasta(),
+                            ofe.getProveedoresCedula(), "Gano");
+                    gestionVentana.actualizarPerdedoresOfertas(oferPer,ofe.getValor());
                     DefaultTableModel vacio = new DefaultTableModel();
                     jTOfertas.setModel(vacio);
                     jTADetallesOferta.setText(null);

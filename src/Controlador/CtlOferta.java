@@ -25,7 +25,7 @@ public class CtlOferta {
     }
 
     public boolean saveOferta(double valor, Date fechaoferta, String detallesoferta, int subastasCodigosubasta, String proveedoresCedula) {
-        Ofertas oferta = new Ofertas(valor, fechaoferta, detallesoferta, new Subastas(subastasCodigosubasta), new Proveedores(proveedoresCedula),"Participando");
+        Ofertas oferta = new Ofertas(valor, fechaoferta, detallesoferta, new Subastas(subastasCodigosubasta), new Proveedores(proveedoresCedula), "Participando");
         return ofertaDao.save(oferta);
     }
 
@@ -33,12 +33,16 @@ public class CtlOferta {
         return ofertaDao.search(codigooferta);
     }
 
+    public Ofertas searchValor(double valor) {
+        return ofertaDao.searchValor(valor);
+    }
+
     public Ofertas searchOfertaSubasta(int subastasCodigosubasta) {
         return ofertaDao.searchOfertaSubasta(subastasCodigosubasta);
     }
 
-    public boolean updateOferta(int codigooferta, double valor, Date fechaoferta, String detallesoferta, Subastas subastasCodigosubasta, Proveedores proveedoresCedula,String res) {
-        Ofertas oferta = new Ofertas(codigooferta, valor, fechaoferta, detallesoferta, subastasCodigosubasta, proveedoresCedula,res);
+    public boolean updateOferta(int codigooferta, double valor, Date fechaoferta, String detallesoferta, Subastas subastasCodigosubasta, Proveedores proveedoresCedula, String res) {
+        Ofertas oferta = new Ofertas(codigooferta, valor, fechaoferta, detallesoferta, subastasCodigosubasta, proveedoresCedula, res);
         return ofertaDao.update(oferta);
     }
 

@@ -31,7 +31,7 @@ public class VentanaLogin extends javax.swing.JFrame {
     CtlSubasta gestionSubasta;
     CtlOferta gestionOferta;
     double valorOferta;
-
+    
     public VentanaLogin() {
         initComponents();
         setLocationRelativeTo(this);
@@ -50,6 +50,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         if (!oferta.isEmpty()) {
             valorOferta = gestionVentana.verificarOfertaMenor(oferta);
         }
+        gestionVentana.actualizarPerdedoresOfertas(oferta,valorOferta);
     }
 
     /**
@@ -169,13 +170,13 @@ public class VentanaLogin extends javax.swing.JFrame {
                     new VentanaEmpresario(nickname).setVisible(true);
                     limpiarCamposLogin();
                     break;
-
+                
                 case "Proveedor":
                     JOptionPane.showMessageDialog(null, "Bienvenido Proveedor " + nickname);
                     new VentanaProveedor(nickname, valorOferta).setVisible(true);
                     limpiarCamposLogin();
                     break;
-
+                
                 default:
                     JOptionPane.showMessageDialog(null, "El usuario no se encuentra registrado");
                     break;
@@ -188,7 +189,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         new VentanaRegistro().setVisible(true);
     }//GEN-LAST:event_jBRegistrarActionPerformed
-
+    
     public void limpiarCamposLogin() {
         jTFNickname.setText(null);
         jPFContrasenia.setText(null);

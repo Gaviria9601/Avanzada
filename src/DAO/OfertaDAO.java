@@ -43,9 +43,20 @@ public class OfertaDAO extends Conexion {
             return null;
         }
     }
+    
+    public Ofertas searchValor(double valor) {
+        try {
+            conectar();
+            Ofertas oferta = entity.createNamedQuery("Ofertas.findByValor", Ofertas.class)
+                    .setParameter("valor", valor).getSingleResult();
+            desconectar();
+            return oferta;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public Ofertas searchOfertaSubasta(int subastasCodigosubasta) {
-        System.out.println(subastasCodigosubasta);
         try {
             conectar();
             Ofertas ofe = entity.createNamedQuery("Ofertas.findByOferta", Ofertas.class)

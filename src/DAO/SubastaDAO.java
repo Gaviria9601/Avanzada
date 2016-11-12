@@ -60,6 +60,7 @@ public class SubastaDAO extends Conexion {
 
     public boolean update(Subastas subasta) {
         try {
+            conectar();
             if (search(subasta.getCodigosubasta()) != null) {
                 conectar();
                 entity.merge(subasta);

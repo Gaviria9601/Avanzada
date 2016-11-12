@@ -46,6 +46,9 @@ public class Ofertas implements Serializable {
     @Column(name = "codigooferta")
     private Integer codigooferta;
     @Basic(optional = false)
+    @Column(name = "resultado")
+    private String resultado;
+    @Basic(optional = false)
     @Column(name = "valor")
     private double valor;
     @Basic(optional = false)
@@ -60,9 +63,7 @@ public class Ofertas implements Serializable {
     @JoinColumn(name = "proveedores_cedula", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Proveedores proveedoresCedula;
-    @Column(name = "resultado")
-    private String resultado;
-    @Basic(optional = false)
+    
 
     public Ofertas() {
     }
@@ -77,7 +78,7 @@ public class Ofertas implements Serializable {
         this.detallesoferta = detalles;
         this.subastas_codigosubasta = sub;
         this.proveedoresCedula = pro;
-        this.resultado= resultado;
+        this.resultado = resultado;
     }
 
     public Ofertas(Integer codigooferta, double valor, Date fechaoferta, String detalles, Subastas sub, Proveedores pro,String res) {
@@ -88,6 +89,22 @@ public class Ofertas implements Serializable {
         this.subastas_codigosubasta = sub;
         this.proveedoresCedula = pro;
         this.resultado = res;
+    }
+
+    public String getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(String resultado) {
+        this.resultado = resultado;
+    }
+
+    public Subastas getSubastas_codigosubasta() {
+        return subastas_codigosubasta;
+    }
+
+    public void setSubastas_codigosubasta(Subastas subastas_codigosubasta) {
+        this.subastas_codigosubasta = subastas_codigosubasta;
     }
 
    
@@ -138,16 +155,6 @@ public class Ofertas implements Serializable {
     public void setProveedoresCedula(Proveedores proveedoresCedula) {
         this.proveedoresCedula = proveedoresCedula;
     }
-
-    public String getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(String resultado) {
-        this.resultado = resultado;
-    }
-    
-    
 
     @Override
     public int hashCode() {

@@ -39,6 +39,7 @@ public class CtlVentana {
     CtlMunicipio gestionmun;
     CtlSubasta gestionSubasta;
     CtlCategoriaOfrecida gestionCateOfrecida;
+    CtlOferta gestionOferta;
 
     public CtlVentana() {
         gestionCategoria = new CtlCategoria();
@@ -47,6 +48,7 @@ public class CtlVentana {
         gestionProducto = new CtlProducto();
         gestionSubasta = new CtlSubasta();
         gestionCateOfrecida = new CtlCategoriaOfrecida();
+        gestionOferta = new CtlOferta();
     }
 
     /**
@@ -201,8 +203,20 @@ public class CtlVentana {
                 ofertamenor = ofertas.get(i).getValor();
             }
         }
+        Ofertas of = gestionOferta.searchValor(ofertamenor);
+        gestionOferta.updateOferta(of.getCodigooferta(), of.getValor(), of.getFechaoferta(), of.getDetallesoferta(),
+                of.getSubastas_codigosubasta(), of.getProveedoresCedula(), "Gano");
         return ofertamenor;
 
+    }
+
+    public void actualizarPerdedoresOfertas(List<Ofertas> ofertas, double valor) {
+        for (int i = 0; i < ofertas.size(); i++) {
+            if (ofertas.get(i).getResultado().equals("Participando") && ofertas.get(i).getValor() != valor) {
+                gestionOferta.updateOferta(ofertas.get(i).getCodigooferta(), ofertas.get(i).getValor(), ofertas.get(i).getFechaoferta(), ofertas.get(i).getDetallesoferta(),
+                        ofertas.get(i).getSubastas_codigosubasta(), ofertas.get(i).getProveedoresCedula(), "Perdio");
+            }
+        }
     }
 
     public CtlMunicipio getGestionmun() {
@@ -364,7 +378,7 @@ public class CtlVentana {
      * @param ofe
      * @return un modelo de informacion
      */
-    public DefaultTableModel listarSubastasProParticipo(List<Ofertas> ofe, double valor) {
+    public DefaultTableModel listarSubastasProParticipo(List<Ofertas> ofe) {
         DefaultTableModel temporal;
         String nombreColumnas[] = {"Codigo Subasta", "Cantidad",
             "Fecha Inicio", "Fecha Final", "Fecha Entrega", "Producto", "Categoria", "Empresario", "Resultado"};
@@ -375,8 +389,18 @@ public class CtlVentana {
             }
         };
         for (int i = 0; i < ofe.size(); i++) {
-            if (!ofe.get(i).getSubastasCodigosubasta().getEstado()) {
-                if (valor == ofe.get(i).getValor()) {
+            if (ofe.get(i).getResultado().equals("Participando")) {
+                temporal.addRow(new Object[]{
+                    ofe.get(i).getSubastasCodigosubasta().getCodigosubasta(),
+                    ofe.get(i).getSubastasCodigosubasta().getCantidadproductos(),
+                    ofe.get(i).getSubastasCodigosubasta().getFechainicio(),
+                    ofe.get(i).getSubastasCodigosubasta().getFechafinal(),
+                    ofe.get(i).getSubastasCodigosubasta().getFechaentrega(),
+                    ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getNombreproducto(),
+                    ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getCategoriasCodigo().getNombre(),
+                    ofe.get(i).getSubastasCodigosubasta().getEmpresariosCedula().getNombrecompleto(), "Participando",});
+            } else if (!ofe.get(i).getSubastasCodigosubasta().getEstado()) {
+                if (ofe.get(i).getResultado().equals("Gano")) {
                     temporal.addRow(new Object[]{
                         ofe.get(i).getSubastasCodigosubasta().getCodigosubasta(),
                         ofe.get(i).getSubastasCodigosubasta().getCantidadproductos(),
@@ -386,7 +410,7 @@ public class CtlVentana {
                         ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getNombreproducto(),
                         ofe.get(i).getSubastasCodigosubasta().getProductosCodigo().getCategoriasCodigo().getNombre(),
                         ofe.get(i).getSubastasCodigosubasta().getEmpresariosCedula().getNombrecompleto(), "Gano",});
-                } else if (valor != ofe.get(i).getValor()) {
+                } else if (ofe.get(i).getResultado().equals("Perdio")) {
                     temporal.addRow(new Object[]{
                         ofe.get(i).getSubastasCodigosubasta().getCodigosubasta(),
                         ofe.get(i).getSubastasCodigosubasta().getCantidadproductos(),

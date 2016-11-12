@@ -63,8 +63,11 @@ public class VentanaProveedor extends javax.swing.JFrame {
         jTFFecha.setEnabled(false);
         jTFFecha.setText(gestionVentana.generarFechaActualCadena());
         ofertasPro = gestionOferta.listPro(pro.getCedula());
-        System.out.println(valorOferta);
-        jTSubastasParticipo.setModel(gestionVentana.listarSubastasProParticipo(ofertasPro,valorOferta));
+        jTSubastasParticipo.setModel(gestionVentana.listarSubastasProParticipo(ofertasPro));
+        jTFCodBusOfe.setEditable(false);
+        jTADetallesOfertaBus.setEditable(false);
+        jTFFechaBus.setEditable(false);
+        jTFValorOfertaBus.setEditable(false);
     }
 
     /**
@@ -110,6 +113,16 @@ public class VentanaProveedor extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTSubastasParticipo = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTADetallesOfertaBus = new javax.swing.JTextArea();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jTFValorOfertaBus = new javax.swing.JTextField();
+        jTFFechaBus = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jTFCodBusOfe = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -444,8 +457,97 @@ public class VentanaProveedor extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
                 .addGap(29, 29, 29))
+        );
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Oferta Realizada", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel4.setText("Detalles Oferta");
+
+        jTADetallesOfertaBus.setColumns(20);
+        jTADetallesOfertaBus.setRows(5);
+        jScrollPane3.setViewportView(jTADetallesOfertaBus);
+
+        jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel10.setText("Fecha:");
+
+        jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel5.setText("Valor Oferta: $");
+
+        jTFValorOfertaBus.setFont(new java.awt.Font("Century", 0, 12)); // NOI18N
+        jTFValorOfertaBus.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTFValorOfertaBusKeyTyped(evt);
+            }
+        });
+
+        jTFFechaBus.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+
+        jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel11.setText("Codigo:");
+
+        jTFCodBusOfe.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(260, 260, 260)
+                        .addComponent(jLabel11)
+                        .addGap(37, 37, 37)
+                        .addComponent(jTFCodBusOfe, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(157, 157, 157)
+                        .addComponent(jLabel4)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTFValorOfertaBus, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel10))
+                .addGap(32, 32, 32))
+            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createSequentialGroup()
+                    .addContainerGap(556, Short.MAX_VALUE)
+                    .addComponent(jTFFechaBus, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(69, 69, 69)))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jTFCodBusOfe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jTFValorOfertaBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(38, 38, 38))
+            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createSequentialGroup()
+                    .addGap(74, 74, 74)
+                    .addComponent(jTFFechaBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(81, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -456,13 +558,19 @@ public class VentanaProveedor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Estado Subastas", jPanel7);
@@ -563,7 +671,7 @@ public class VentanaProveedor extends javax.swing.JFrame {
                 if (gestionOferta.saveOferta(valor, fecha, detallesOferta, subOfertar.getCodigosubasta(), pro.getCedula())) {
                     JOptionPane.showMessageDialog(null, "Se ha enviado la Oferta a la Subasta con codigo " + subOfertar.getCodigosubasta());
                     ofertasPro = gestionOferta.listPro(pro.getCedula());
-                    jTSubastasParticipo.setModel(gestionVentana.listarSubastasProParticipo(ofertasPro,valorOferta));
+                    jTSubastasParticipo.setModel(gestionVentana.listarSubastasProParticipo(ofertasPro));
                     limpiarCamposEnvioOferta();
                 } else {
                     JOptionPane.showMessageDialog(null, "Hubo un error");
@@ -576,7 +684,18 @@ public class VentanaProveedor extends javax.swing.JFrame {
 
     private void jTSubastasParticipoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTSubastasParticipoMouseClicked
         // TODO add your handling code here:
+        int pos = jTSubastasParticipo.getSelectedRow();
+        System.out.println(jTSubastasParticipo.getValueAt(pos, 0));
+        List<Ofertas> ofe =  gestionOferta.listOfertaSolicitud(Integer.parseInt(jTSubastasParticipo.getValueAt(pos, 0)+""));
+        jTFCodBusOfe.setText(ofe.get(0).getCodigooferta()+"");
+        jTADetallesOfertaBus.setText(ofe.get(0).getDetallesoferta());
+        jTFFechaBus.setText(ofe.get(0).getFechaoferta().toString());
+        jTFValorOfertaBus.setText(ofe.get(0).getValor()+"");
     }//GEN-LAST:event_jTSubastasParticipoMouseClicked
+
+    private void jTFValorOfertaBusKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFValorOfertaBusKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTFValorOfertaBusKeyTyped
 
     /**
      * limpia los campos de envio de una oferta
@@ -594,8 +713,12 @@ public class VentanaProveedor extends javax.swing.JFrame {
     private javax.swing.JComboBox jCBCategorias;
     private javax.swing.JLabel jLNombreProveedor;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -608,18 +731,24 @@ public class VentanaProveedor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextArea jTADescripcionSubasta;
     private javax.swing.JTextArea jTADetallesOferta;
+    private javax.swing.JTextArea jTADetallesOfertaBus;
     private javax.swing.JTable jTAreasOfrecidas;
+    private javax.swing.JTextField jTFCodBusOfe;
     private javax.swing.JTextArea jTFDescripcionCate;
     private javax.swing.JTextField jTFFecha;
+    private javax.swing.JTextField jTFFechaBus;
     private javax.swing.JTextField jTFValorOferta;
+    private javax.swing.JTextField jTFValorOfertaBus;
     private javax.swing.JTable jTSubastas;
     private javax.swing.JTable jTSubastasParticipo;
     private javax.swing.JTabbedPane jTabbedPane1;
